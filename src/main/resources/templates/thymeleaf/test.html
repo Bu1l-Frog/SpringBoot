@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.w3.org/1999/xhtml">
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script th:src="@{/static/js/test.js}"></script>
+</head>
+<body>
+<div>
+    用户姓名: <input th:id="${user.name}" th:name="${user.name}" th:value="${user.name}"/><br>
+    用户年龄: <input th:value="${user.age}"/><br>
+    用户生日: <input th:value="${user.date}"/><br>
+    用户生日: <input th:value="${#dates.format(user.date, 'dd-MM-yyyy')}"/>
+</div>
+<div th:object="${user}">
+    用户姓名: <input th:id="*{name}" th:name="*{name}" th:value="*{name}"/><br>
+    用户年龄: <input th:value="*{age}"/><br>
+    用户生日: <input th:value="*{date}"/><br>
+    用户生日: <input th:value="*{#dates.format(date, 'dd-MM-yyyy')}"/>
+</div>
+text 与 utext:<br>
+<span th:text="${user.desc}">abc</span><br>
+<span th:utext="${user.desc}">abc</span><br>
+
+URL:<br>
+<a href="http://www.baidu.com" th:href="@{http://www.baidu.com}">网址</a><br>
+
+<form th:action="@{/th/postform}" th:object="${user}" method="post" th:method="post">
+    <input type="text" th:field="*{name}"/>
+    <input type="submit"/>
+</form><br>
+
+<div th:if="${user.age} == 18">18</div>
+<div th:if="${user.age} gt 18">>18</div>
+<div th:if="${user.age} lt 18"><18</div><br>
+<div th:if="${user.age} ge 18">>=18</div>
+<div th:if="${user.age} le 18"><=18</div><br>
+
+<select>
+    <option>选择框</option>
+    <option th:selected="${user.name eq 'Lee'}">Lee</option>
+    <option th:selected="${user.name eq 'abc'}">abc</option>
+    <option th:selected="${user.name eq '123'}">123</option>
+</select><br>
+
+<table>
+    <tr>
+        <th>姓名</th>
+        <th>年龄</th>
+        <th>生日</th>
+        <th>备注</th>
+    </tr>
+    <tr th:each="person:${userlist}">
+        <td th:text="${person.name}"></td>
+        <td th:text="${person.age}"></td>
+        <td th:text="${person.age gt 18} ? 大于18:小于18">18</td>
+        <td th:text="${#dates.format(user.date)}, 'yyyy-MM-dd'"></td>
+    </tr>
+</table><br>
+
+<div th:switch="${user.name}">
+    <p th:case="abc">超级管理员</p>
+    <p th:case="#{roles.manager}">普通管理员</p>
+    <p th:case="*">其他用户</p>
+</div><br>
+
+</body>
+</html>
